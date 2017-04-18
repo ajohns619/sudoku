@@ -8,7 +8,7 @@ def get_sudoku(name):
     file = open(name, "r")
 
     while True:
-        # Read a single character
+        # Read a single character at a time
         c = file.read(1)
         if not c:
             break
@@ -35,7 +35,7 @@ def check_rows(sudoku):
                 return False
     return True
            
-# STUB
+# Checks that the columns have no duplicates
 def check_cols(sudoku):
     for col in range(9):
         col_elems = [0 for i in range(10)]
@@ -70,11 +70,11 @@ def check_single_square(sudoku, first_row, first_col):
                 return False
     return True
 
-# Calls all checks to validate sudoku
-# And operators require all checks to be true
+# Calls all checks to validate sudoku; &-operators require all checks to be true
 def validate_sudoku(sudoku):
     if (len(sudoku) != 81):
         return False
+
     result  = True
     result &= check_min_max(sudoku)
     result &= check_rows(sudoku)
