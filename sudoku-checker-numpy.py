@@ -1,4 +1,5 @@
 from sys import argv
+import numpy as np
 
 script, sudoku_name = argv
 
@@ -15,20 +16,23 @@ def get_sudoku(name):
         elif c.isdigit():
             sudoku.append(int(c))
     file.close()
+
     return sudoku
 
 # Checks that the digits are between and include 1 and 9
 def check_min_max(sudoku):
-    if max(sudoku) != 9 or min(sudoku) != 1:
+    if np.amax(sudoku) != 9 or np.amin(sudoku) != 1:
         return False
     return True
 
 # Checks that the rows have no duplicates
 def check_rows(sudoku):
     for row in range(9):
+        # row_elems is a usual python array, since it is one-dimensional
         row_elems = [0 for i in range(10)]
+
         for col in range(9):
-            elem = sudoku[row * 9 + col]
+            elem = sudoku[row][col]
             if row_elems[elem] == 0:
                 row_elems[elem] = 1
             else:
@@ -37,16 +41,8 @@ def check_rows(sudoku):
            
 # Checks that the columns have no duplicates
 def check_cols(sudoku):
-    for col in range(9):
-        col_elems = [0 for i in range(10)]
-        for row in range(9):
-            elem = sudoku[col * 9 + row]
-            if col_elems[elem] == 0:
-                col_elems[elem] = 1
-            else:
-                return False
-
-    return True
+    # Checking the rows is the same as checking columns of the transpose
+    return check_rows(np.transpose(sudoku))
 
 # Checks that all squares have only one instance of any digit
 def check_squares(sudoku):
@@ -75,10 +71,13 @@ def validate_sudoku(sudoku):
     if (len(sudoku) != 81):
         return False
 
+    # Create a numpy element with 9 dimensional array with 9 elements (corresponing to the rows)
+    np_sudoku = np.array(sudoku).reshape(9, 9)
+
     result  = True
-    result &= check_min_max(sudoku)
-    result &= check_rows(sudoku)
-    result &= check_cols(sudoku)
+    result &= check_min_max(np_sudoku)
+    result &= check_rows(np_sudoku)
+    result &= check_cols(np_sudoku)
     result &= check_squares(sudoku)
 
     return result
