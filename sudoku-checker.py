@@ -1,6 +1,9 @@
-from sys import argv
+# sudoky-checker.py
+# Author: Alex Johnson
+#
+# Date: 4/21/2017
 
-script, sudoku_name = argv
+from sys import argv
 
 # Gets 9x9 sudoku with specified filename and stores it in list
 def get_sudoku(name):
@@ -84,7 +87,7 @@ def validate_sudoku(sudoku):
     return result
 
 def main():
-    sudoku = get_sudoku(sudoku_name)
+    sudoku = get_sudoku(argv[1])
     result = validate_sudoku(sudoku)
     print(result)  
 

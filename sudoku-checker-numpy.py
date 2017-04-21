@@ -1,7 +1,11 @@
+# sudoky-checker-numpy.py
+# Author: Alex Johnson
+#
+# Date: 4/21/2017
+
+
 from sys import argv
 import numpy as np
-
-script, sudoku_name = argv
 
 # Gets 9x9 sudoku with specified filename and stores it in list
 def get_sudoku(name):
@@ -59,7 +63,7 @@ def check_single_square(sudoku, first_row, first_col):
     square_elems = [0 for i in range(10)]
     for row in range(3):
         for col in range(3):
-            elem = sudoku[(first_row + row) * 9 + (first_col + col)]
+            elem = sudoku[(first_row + row)][(first_col + col)]
             if square_elems[elem] == 0:
                 square_elems[elem] = 1
             else:
@@ -71,21 +75,22 @@ def validate_sudoku(sudoku):
     if (len(sudoku) != 81):
         return False
 
-    # Create a numpy element with 9 dimensional array with 9 elements (corresponing to the rows)
+    # Create a numpy element: 9 dimensional array with 9 elements
     np_sudoku = np.array(sudoku).reshape(9, 9)
 
     result  = True
     result &= check_min_max(np_sudoku)
     result &= check_rows(np_sudoku)
     result &= check_cols(np_sudoku)
-    result &= check_squares(sudoku)
+    result &= check_squares(np_sudoku)
 
     return result
 
 def main():
-    sudoku = get_sudoku(sudoku_name)
+    sudoku = get_sudoku(argv[1])
     result = validate_sudoku(sudoku)
     print(result)  
 
 if __name__ == "__main__":
     main()
+
