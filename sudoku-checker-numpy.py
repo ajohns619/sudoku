@@ -1,19 +1,18 @@
 # sudoky-checker-numpy.py
 # Author: Alex Johnson
 #
-# Date: 4/21/2017
+# Date: 5/21/2017
 
 
 from sys import argv
 import numpy as np
 
-# Gets 9x9 sudoku with specified filename and stores it in list
+# Reads in 9x9 sudoku with specified filename and stores it in list
 def get_sudoku(name):
     sudoku = [];
     file = open(name, "r")
 
     while True:
-        # Read a single character at a time
         c = file.read(1)
         if not c:
             break
@@ -25,9 +24,8 @@ def get_sudoku(name):
 
 # Checks that the digits are between and include 1 and 9
 def check_min_max(sudoku):
-    if np.amax(sudoku) != 9 or np.amin(sudoku) != 1:
-        return False
-    return True
+    # Returns true if the min is 1 and the max is 9
+    return (np.amax(sudoku) == 9 and np.amin(sudoku) == 1)
 
 # Checks that the rows have no duplicates
 def check_rows(sudoku):
@@ -50,16 +48,16 @@ def check_cols(sudoku):
 
 # Checks that all squares have only one instance of any digit
 def check_squares(sudoku):
-    for first_row in range(3):
-        for first_col in range(3):
-            if not check_single_square(sudoku, 3 * first_row, 3 * first_col):
+    for row in range(3):
+        for col in range(3):
+            if not three_by_three_square(sudoku, 3 * row, 3 * col):
                 return False
     return True
 
 
 # Checks that one specific square has only one instance of any digit
 # first_row and first_col are the coordinares of the upper left element of the square
-def check_single_square(sudoku, first_row, first_col):
+def three_by_three_square(sudoku, first_row, first_col):
     square_elems = [0 for i in range(10)]
     for row in range(3):
         for col in range(3):
@@ -93,4 +91,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
