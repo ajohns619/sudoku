@@ -54,7 +54,6 @@ def check_squares(sudoku):
                 return False
     return True
 
-
 # Checks that one specific square has only one instance of any digit
 # first_row and first_col are the coordinares of the upper left element of the square
 def three_by_three_square(sudoku, first_row, first_col):
